@@ -11,6 +11,7 @@ func _ready() -> void:
 	# Make sure the key animation plays as soon as it appears.
 	if has_node("AnimationPlayer"):
 		$AnimationPlayer.play("RESET")
+		//adsasdasdasd
 
 	body_entered.connect(_on_body_entered)
 

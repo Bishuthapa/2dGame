@@ -32,6 +32,15 @@ var _is_attacking: bool = false
 
 func _ready() -> void:
 	animation_tree.set_active(true)
+	player = _get_player()
+
+
+func _get_player() -> CharacterBody2D:
+	if is_instance_valid(player):
+		return player
+
+	player = get_tree().get_first_node_in_group("player") as CharacterBody2D
+	return player
 	
 func _physics_process(_delta: float) -> void:
 	if state == State.DEAD:
@@ -59,6 +68,11 @@ func _physics_process(_delta: float) -> void:
 
 
 func _determine_next_state() -> State:
+	if _get_player() == null:
+		if global_position.distance_to(spawn_point) > 32.0:
+			return State.RETURN
+		return State.IDLE
+
 	if _is_attacking:
 		return State.ATTACK
 
@@ -84,16 +98,24 @@ func _change_state(new_state: State) -> void:
 
 
 func distance_to_player() -> float:
-	return  global_position.distance_to(player.global_position)
+	var current_player := _get_player()
+	if current_player == null:
+		return INF
+
+	return global_position.distance_to(current_player.global_position)
 	
 	
 func attack() -> void:
 	if _is_attacking or state == State.DEAD:
 		return
 
+	var current_player := _get_player()
+	if current_player == null:
+		return
+
 	_is_attacking = true
 
-	var player_pos:Vector2 = player.global_position
+	var player_pos: Vector2 = current_player.global_position
 	var attack_dir: Vector2 = (player_pos -	global_position).normalized()
 	$Sprite2D.flip_h = attack_dir.x < 0 and abs(attack_dir.x) >= abs(attack_dir.y)
 	animation_tree.set("parameters/attack/BlendSpace2D/blend_position", attack_dir)
@@ -126,7 +148,11 @@ func _state_after_attack() -> State:
 
 func move() -> void:
 	if state == State.CHASE:
-		nav_agent.target_position = player.global_position
+		var current_player := _get_player()
+		if current_player == null:
+			velocity = Vector2.ZERO
+			return
+		nav_agent.target_position = current_player.global_position
 	elif state == State.RETURN:
 		nav_agent.target_position = spawn_point
 	var next_path_position: Vector2 = nav_agent.get_next_path_position()
