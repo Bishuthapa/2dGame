@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://bypns0s24c2ws"]
+
+[ext_resource type="Texture2D" uid="uid://csplixi6i1mcg" path="res://assets/effects/key/key-white.png" id="1_ip0mx"]
+[ext_resource type="Script" uid="uid://du6iyeheh2n6y" path="res://assets/effects/key/key.gd" id="2_ay0ad"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eixcc"]
+size = Vector2(20, 39)
+
+[sub_resource type="Animation" id="Animation_eixcc"]
+length = 1.2
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.90000004, 1, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3nldn"]
+_data = {
+&"RESET": SubResource("Animation_eixcc")
+}
+
+[node name="keys" type="Area2D" unique_id=520557224]
+script = ExtResource("2_ay0ad")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1408661908]
+texture = ExtResource("1_ip0mx")
+hframes = 12
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1174375216]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_eixcc")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1785544360]
+libraries/ = SubResource("AnimationLibrary_3nldn")

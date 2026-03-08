@@ -74,6 +74,42 @@ tracks/0/keys = {
 "update": 1,
 "values": [24, 25, 26, 27, 28, 29]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HitBox:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HitBox:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.18442285, 0.22245558, 0.3003465),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(28, -47), Vector2(28, -47), Vector2(6, 20), Vector2(-17, -10.999998)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("HitBox:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.18442285, 0.22245558, 0.3003465),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.04363323, 0.04363323, 2.7960174, 4.1259584]
+}
 
 [sub_resource type="Animation" id="Animation_5y3cv"]
 resource_name = "attack_left"
@@ -197,6 +233,42 @@ tracks/0/keys = {
 "update": 1,
 "values": [36, 37, 38, 39, 40, 41]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HitBox:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HitBox:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.0078705605, 0.2077828, 0.30380365),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-37, -18), Vector2(-37, -18), Vector2(32, -41.000004)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("HitBox:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.0078705605, 0.2077828, 0.30380365),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [-2.0018926, -2.0018926, 1.0838494]
+}
 
 [sub_resource type="Animation" id="Animation_i3pqv"]
 resource_name = "idle"
@@ -311,10 +383,16 @@ states/run/node = SubResource("AnimationNodeAnimation_i3pqv")
 states/run/position = Vector2(473.2, 93.85472)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_hqtel"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_sweqy"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_2hs0m"), "idle", "attack", SubResource("AnimationNodeStateMachineTransition_606se"), "run", "attack", SubResource("AnimationNodeStateMachineTransition_u1c27"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_op7ga")]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5y3cv"]
+radius = 26.0
+height = 80.0
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_onrkg"]
 size = Vector2(10.75, 42.975002)
 
-[node name="Player" type="CharacterBody2D" unique_id=2123807770]
+[node name="Player" type="CharacterBody2D" unique_id=2123807770 groups=["player"]]
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("1_onrkg")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1419222440]
@@ -336,6 +414,16 @@ tree_root = SubResource("AnimationNodeStateMachine_1jxqw")
 anim_player = NodePath("../AnimationPlayer")
 parameters/attack/TimeScale/scale = 1.0
 parameters/attack/BlendSpace2D/blend_position = Vector2(-0.9957591, 0.01886797)
+
+[node name="HurtBox" type="Area2D" parent="." unique_id=81921752]
+collision_layer = 32
+collision_mask = 0
+input_pickable = false
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox" unique_id=1011738339]
+position = Vector2(1, -25)
+shape = SubResource("CapsuleShape2D_5y3cv")
 
 [node name="HitBox" type="Area2D" parent="." unique_id=1877496454]
 position = Vector2(21, -64)
